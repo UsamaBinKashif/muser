@@ -5,11 +5,53 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
+    provider = "prisma-client-js"
+    output   = "../app/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       String   @id @default(uuid())
+    email    String
+    provider Provider
+    role     Role
+    streams  Stream[]
+    upVotes  Upvote[]
+}
+
+model Stream {
+    id         String     @id @default(uuid())
+    streamType StreamType
+    active     Boolean    @default(true)
+    upVotes    Upvote[]
+    userId     String
+    user       User       @relation(fields: [userId], references: [id])
+}
+
+model Upvote {
+    id       String @id @default(uuid())
+    userId   String
+    streamId String
+    user     User   @relation(fields: [userId], references: [id])
+    stream   Stream @relation(fields: [streamId], references: [id])
+
+    @@unique([userId, streamId])
+}
+
+enum StreamType {
+    Spotify
+    Youtube
+}
+
+enum Provider {
+    Google
+}
+
+enum Role {
+    Streamer
+    EndUser
 }
