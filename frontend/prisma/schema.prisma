@@ -6,7 +6,6 @@
 
 generator client {
     provider = "prisma-client-js"
-    output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -24,12 +23,14 @@ model User {
 }
 
 model Stream {
-    id         String     @id @default(uuid())
-    streamType StreamType
-    active     Boolean    @default(true)
-    upVotes    Upvote[]
-    userId     String
-    user       User       @relation(fields: [userId], references: [id])
+    id          String     @id @default(uuid())
+    streamType  StreamType
+    url         String
+    extractedId String
+    active      Boolean    @default(true)
+    upVotes     Upvote[]
+    userId      String
+    user        User       @relation(fields: [userId], references: [id])
 }
 
 model Upvote {
@@ -44,7 +45,7 @@ model Upvote {
 
 enum StreamType {
     Spotify
-    Youtube
+    YouTube
 }
 
 enum Provider {
