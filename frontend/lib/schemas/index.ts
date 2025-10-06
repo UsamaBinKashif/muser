@@ -9,3 +9,9 @@ export const CreateStreamSchema = z.object({
       message: "URL must be a valid YouTube video link",
     }),
 });
+
+
+export const UpvoteStreamSchema = z.object({
+  streamId: z.string(),
+  userId: z.string(),
+});

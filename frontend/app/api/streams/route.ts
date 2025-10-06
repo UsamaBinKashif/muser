@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { CreateStreamSchema } from "@/utils/schema.zod";
+import { CreateStreamSchema } from "@/lib/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
@@ -17,11 +17,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(stream, { status: 201 });
-  } catch (err: any) {
-    if (err instanceof z.ZodError) {
-      return NextResponse.json({ message: err.issues }, { status: 400 });
-    }
-    return NextResponse.json({ message: "Invalid data" }, { status: 411 });
+    return NextResponse.json(stream, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ message: "Invalid data" }, { status: 400 });
   }
 }
