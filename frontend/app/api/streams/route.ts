@@ -22,3 +22,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Invalid data" }, { status: 400 });
   }
 }
+
+export const GET = async (req: NextRequest) => {
+  const creatorId = req.nextUrl.searchParams.get("creatorId");
+  const streams = await prisma.stream.findMany({
+    where: {
+      userId: creatorId || undefined,
+    },
+  });
+  return NextResponse.json(streams, { status: 200 });
+};
